@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Semey BIL | Оқушылар үні - Пікірлер платформасы</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome 6 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -37,6 +38,11 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         .fade-up {
@@ -79,7 +85,6 @@
             margin: 0 auto;
         }
 
-        /* Admin Panel Styles */
         .admin-bar {
             display: flex;
             justify-content: flex-end;
@@ -103,10 +108,11 @@
         .admin-btn:hover {
             background: rgba(99, 102, 241, 0.4);
             color: white;
+            transform: scale(1.02);
         }
 
         .admin-panel {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(20px);
             border-radius: 1.5rem;
             padding: 2rem;
@@ -135,11 +141,17 @@
 
         .login-input input {
             width: 100%;
-            padding: 0.8rem;
+            padding: 0.8rem 1rem;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid #2d3748;
             border-radius: 1rem;
             color: white;
+            font-size: 1rem;
+        }
+
+        .login-input input:focus {
+            outline: none;
+            border-color: #818cf8;
         }
 
         .admin-stats {
@@ -155,11 +167,13 @@
             border-radius: 1rem;
             flex: 1;
             text-align: center;
+            border: 1px solid rgba(99, 102, 241, 0.3);
         }
 
-        .logout-btn {
-            background: #ef4444;
-            margin-top: 1rem;
+        .stat-card h3 {
+            font-size: 2rem;
+            margin: 0.5rem 0;
+            color: #a5b4fc;
         }
 
         .two-columns {
@@ -176,6 +190,11 @@
             padding: 1.8rem;
             transition: all 0.3s ease;
             box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            transform: translateY(-3px);
         }
 
         .section-title {
@@ -251,6 +270,7 @@
         .btn-primary:hover {
             transform: scale(0.98);
             background: linear-gradient(95deg, #7c3aed, #6366f1);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
         }
 
         .filters {
@@ -282,6 +302,12 @@
         .filter-chip.active {
             background: #6366f1;
             color: white;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.5);
+        }
+
+        .filter-chip:hover:not(.active) {
+            background: #2d3748;
+            border-color: #6366f1;
         }
 
         .search-box {
@@ -301,6 +327,10 @@
             width: 180px;
         }
 
+        .search-box input:focus {
+            outline: none;
+        }
+
         .reviews-list {
             display: flex;
             flex-direction: column;
@@ -317,6 +347,10 @@
             border-left: 4px solid #6366f1;
             transition: 0.2s;
             animation: fadeUp 0.3s ease;
+        }
+
+        .review-card:hover {
+            background: rgba(25, 32, 48, 0.8);
         }
 
         .review-header {
@@ -392,6 +426,10 @@
             color: #c084fc;
         }
 
+        .vote-count {
+            font-weight: 600;
+        }
+
         .admin-reply {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 1rem;
@@ -399,6 +437,11 @@
             margin-top: 12px;
             font-size: 0.85rem;
             border-left: 2px solid #818cf8;
+        }
+
+        .reply-icon {
+            color: #818cf8;
+            margin-right: 5px;
         }
 
         .reply-section {
@@ -437,6 +480,14 @@
             background: #ef4444;
         }
 
+        .reply-btn:hover {
+            background: #8b5cf6;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+        }
+
         .date-text {
             font-size: 0.7rem;
             color: #6b7280;
@@ -459,15 +510,43 @@
             font-weight: 500;
             z-index: 1000;
             animation: fadeUp 0.3s ease;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #a5b4fc;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            animation: pulse 1s infinite;
         }
 
         @media (max-width: 900px) {
             .two-columns {
                 grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            body {
+                padding: 1rem;
             }
             h1 {
                 font-size: 2rem;
             }
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #6366f1;
+            border-radius: 10px;
         }
 
         footer {
@@ -475,10 +554,6 @@
             text-align: center;
             font-size: 0.8rem;
             color: #4b5563;
-        }
-
-        .admin-badge {
-            color: #fbbf24;
         }
     </style>
 </head>
@@ -490,7 +565,6 @@
         </div>
     </div>
 
-    <!-- Admin Panel -->
     <div class="admin-panel" id="adminPanel">
         <div id="adminLoginForm" class="login-form">
             <div class="section-title">
@@ -518,14 +592,19 @@
             </div>
             <div class="admin-stats">
                 <div class="stat-card">
-                    <i class="fas fa-comments"></i>
+                    <i class="fas fa-comments fa-2x"></i>
                     <h3 id="totalReviews">0</h3>
                     <p>Барлық пікірлер</p>
                 </div>
                 <div class="stat-card">
-                    <i class="fas fa-reply-all"></i>
+                    <i class="fas fa-reply-all fa-2x"></i>
                     <h3 id="totalReplies">0</h3>
                     <p>Жауап берілген</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-thumbs-up fa-2x"></i>
+                    <h3 id="totalLikes">0</h3>
+                    <p>Жалпы лайктар</p>
                 </div>
             </div>
             <div class="glass-card" style="padding: 1rem;">
@@ -570,7 +649,7 @@
                 <button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> Пікір жіберу</button>
             </form>
             <div style="margin-top: 1rem; font-size: 0.7rem; color: #6b7280; text-align: center;">
-                <i class="fas fa-shield-alt"></i> Барлық пікірлер барлық оқушыларға көрінеді. Анонимді режимді таңдауға болады.
+                <i class="fas fa-cloud-upload-alt"></i> Пікірлеріңіз бұлтта сақталады және барлық оқушыларға көрінеді!
             </div>
         </div>
 
@@ -592,37 +671,116 @@
                 </div>
             </div>
             <div id="reviewsContainer" class="reviews-list">
-                <div class="empty-state">
-                    <i class="fas fa-inbox fa-2x"></i>
-                    <p>Әзірге ешқандай пікір жоқ. Бірінші болып пікір қалдырыңыз!</p>
+                <div class="loading">
+                    <i class="fas fa-spinner fa-pulse"></i> Пікірлер жүктелуде...
                 </div>
             </div>
         </div>
     </div>
     <footer>
-        <i class="fas fa-school"></i> Semey BIL Білім беру мекемесі | Оқушылар үні — әр пікір маңызды
+        <i class="fas fa-cloud"></i> Барлық пікірлер Firebase бұлтта сақталады | Semey BIL Білім беру мекемесі
     </footer>
 </div>
 
 <script>
-    let reviews = [];
-    let isAdminLoggedIn = false;
+    // Firebase конфигурациясы (сіздің берген мәліметтеріңіз)
+    const firebaseConfig = {
+        apiKey: "AIzaSyBgy7PHFOIRW9s3-w_gSLnvohd9Gu7SAmQ",
+        authDomain: "semeybil-reviews.firebaseapp.com",
+        projectId: "semeybil-reviews",
+        storageBucket: "semeybil-reviews.firebasestorage.app",
+        messagingSenderId: "868136694731",
+        appId: "1:868136694731:web:3802470d09cb42e7d1bc4e",
+        measurementId: "G-YSS7HKVJ3R"
+    };
 
-    function loadReviewsFromStorage() {
-        const stored = localStorage.getItem("semeybil_student_voices");
-        if(stored) {
-            reviews = JSON.parse(stored);
-        } else {
-            reviews = [];
-            saveReviewsToStorage();
+    // Firebase инициализациясы
+    let db;
+    let isAdminLoggedIn = false;
+    let currentFilter = "all";
+    let searchQuery = "";
+    let allReviews = [];
+
+    // Firebase қосу
+    function initFirebase() {
+        try {
+            const app = firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore(app);
+            console.log("Firebase сәтті қосылды!");
+            loadReviewsFromFirebase();
+        } catch (error) {
+            console.error("Firebase қосу қатесі:", error);
+            showToast("Firebase қосылу қатесі, бетті жаңартыңыз");
+            document.getElementById("reviewsContainer").innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i> <p>Firebase қосылу қатесі. Интернет байланысын тексеріңіз.</p></div>';
         }
-        renderReviews();
-        if(isAdminLoggedIn) updateAdminStats();
     }
 
-    function saveReviewsToStorage() {
-        localStorage.setItem("semeybil_student_voices", JSON.stringify(reviews));
-        if(isAdminLoggedIn) updateAdminStats();
+    // Firebase-тен пікірлерді жүктеу
+    async function loadReviewsFromFirebase() {
+        try {
+            const snapshot = await db.collection("reviews").orderBy("timestamp", "desc").get();
+            allReviews = [];
+            snapshot.forEach(doc => {
+                allReviews.push({ id: doc.id, ...doc.data() });
+            });
+            renderReviews();
+            if(isAdminLoggedIn) updateAdminStats();
+        } catch (error) {
+            console.error("Пікірлерді жүктеу қатесі:", error);
+            document.getElementById("reviewsContainer").innerHTML = '<div class="empty-state"><i class="fas fa-database"></i> <p>Пікірлерді жүктеу мүмкін болмады. Firebase конфигурациясын тексеріңіз.</p></div>';
+        }
+    }
+
+    // Firebase-ке пікір қосу
+    async function addReviewToFirebase(review) {
+        try {
+            const docRef = await db.collection("reviews").add(review);
+            review.id = docRef.id;
+            allReviews.unshift(review);
+            renderReviews();
+            showToast("Пікіріңіз сәтті жіберілді! ✅");
+            if(isAdminLoggedIn) updateAdminStats();
+        } catch (error) {
+            console.error("Пікір қосу қатесі:", error);
+            showToast("Қате кетті, пікір сақталмады ❌");
+        }
+    }
+
+    // Firebase-тен пікір өшіру
+    async function deleteReviewFromFirebase(id) {
+        try {
+            await db.collection("reviews").doc(id).delete();
+            allReviews = allReviews.filter(rev => rev.id !== id);
+            renderReviews();
+            showToast("Пікір жойылды 🗑️");
+            if(isAdminLoggedIn) updateAdminStats();
+        } catch (error) {
+            console.error("Пікір өшіру қатесі:", error);
+            showToast("Өшіру мүмкін болмады ❌");
+        }
+    }
+
+    // Firebase-те жауапты жаңарту
+    async function updateAdminReplyInFirebase(id, replyText) {
+        try {
+            await db.collection("reviews").doc(id).update({ adminReply: replyText });
+            const review = allReviews.find(rev => rev.id === id);
+            if(review) review.adminReply = replyText;
+            renderReviews();
+            showToast("Жауап сақталды 📢");
+        } catch (error) {
+            console.error("Жауап сақтау қатесі:", error);
+            showToast("Жауап сақталмады ❌");
+        }
+    }
+
+    // Firebase-те лайк/дислайк жаңарту
+    async function updateVoteInFirebase(id, likes, dislikes) {
+        try {
+            await db.collection("reviews").doc(id).update({ likes: likes, dislikes: dislikes });
+        } catch (error) {
+            console.error("Голос сақтау қатесі:", error);
+        }
     }
 
     function getCategoryName(cat) {
@@ -642,7 +800,6 @@
 
     function addReview(author, isAnonymous, category, text) {
         const newReview = {
-            id: Date.now(),
             author: author.trim() === "" ? "Қонақ" : author.trim(),
             isAnonymous: isAnonymous,
             category: category,
@@ -650,43 +807,39 @@
             likes: 0,
             dislikes: 0,
             adminReply: "",
-            createdAt: getCurrentDateTime()
+            createdAt: getCurrentDateTime(),
+            timestamp: Date.now()
         };
-        reviews.unshift(newReview);
-        saveReviewsToStorage();
-        renderReviews();
-        showToast("Пікіріңіз сәтті жіберілді! ✅");
+        
+        addReviewToFirebase(newReview);
     }
 
     function deleteReview(id) {
-        reviews = reviews.filter(rev => rev.id !== id);
-        saveReviewsToStorage();
-        renderReviews();
-        showToast("Пікір жойылды 🗑️");
+        if(confirm("Бұл пікірді жойғыңыз келеді ме?")) {
+            deleteReviewFromFirebase(id);
+        }
     }
 
     function voteReview(id, type) {
-        const review = reviews.find(rev => rev.id === id);
+        const review = allReviews.find(rev => rev.id === id);
         if(review) {
             if(type === 'like') {
                 review.likes = (review.likes || 0) + 1;
             } else if(type === 'dislike') {
                 review.dislikes = (review.dislikes || 0) + 1;
             }
-            saveReviewsToStorage();
+            
+            updateVoteInFirebase(id, review.likes, review.dislikes);
             renderReviews();
         }
     }
 
     function addAdminReply(id, replyText) {
-        if(replyText.trim() === "") return;
-        const review = reviews.find(rev => rev.id === id);
-        if(review) {
-            review.adminReply = replyText.trim();
-            saveReviewsToStorage();
-            renderReviews();
-            showToast("Жауап сақталды 📢");
+        if(replyText.trim() === "") {
+            showToast("Жауап мәтінін жазыңыз!");
+            return;
         }
+        updateAdminReplyInFirebase(id, replyText);
     }
 
     function showToast(message) {
@@ -699,13 +852,10 @@
         }, 3000);
     }
 
-    let currentFilter = "all";
-    let searchQuery = "";
-
     function renderReviews() {
         const container = document.getElementById("reviewsContainer");
-        let filtered = [...reviews];
-
+        let filtered = [...allReviews];
+        
         if(currentFilter !== "all") {
             filtered = filtered.filter(rev => rev.category === currentFilter);
         }
@@ -714,12 +864,12 @@
             filtered = filtered.filter(rev => rev.text.toLowerCase().includes(q) || 
                                         (!rev.isAnonymous && rev.author.toLowerCase().includes(q)));
         }
-
+        
         if(filtered.length === 0) {
-            container.innerHTML = `<div class="empty-state"><i class="fas fa-comment-slash"></i> <p>Пікірлер табылмады. Бірінші болып пікір қосыңыз!</p></div>`;
+            container.innerHTML = `<div class="empty-state"><i class="fas fa-comment-slash fa-2x"></i> <p>Пікірлер табылмады. Бірінші болып пікір қосыңыз!</p></div>`;
             return;
         }
-
+        
         container.innerHTML = filtered.map(rev => {
             const displayName = rev.isAnonymous ? "🔒 Анонимді қолданушы" : rev.author;
             const categoryName = getCategoryName(rev.category);
@@ -739,13 +889,13 @@
                     <div class="review-text">${escapeHtml(rev.text)}</div>
                     <div class="review-footer">
                         <div class="vote-buttons">
-                            <button class="vote-btn" onclick="voteReview(${rev.id}, 'like')">
+                            <button class="vote-btn" onclick="voteReview('${rev.id}', 'like')">
                                 <i class="fas fa-thumbs-up"></i> <span class="vote-count">${rev.likes || 0}</span>
                             </button>
-                            <button class="vote-btn" onclick="voteReview(${rev.id}, 'dislike')">
+                            <button class="vote-btn" onclick="voteReview('${rev.id}', 'dislike')">
                                 <i class="fas fa-thumbs-down"></i> <span class="vote-count">${rev.dislikes || 0}</span>
                             </button>
-                            ${isAdminLoggedIn ? `<button class="vote-btn delete-btn" onclick="deleteReview(${rev.id})" style="color:#ef4444;">
+                            ${isAdminLoggedIn ? `<button class="vote-btn delete-btn" onclick="deleteReview('${rev.id}')" style="color:#ef4444;">
                                 <i class="fas fa-trash-alt"></i> Жою
                             </button>` : ''}
                         </div>
@@ -759,7 +909,7 @@
                     ${isAdminLoggedIn ? `
                         <div class="reply-section admin-mode">
                             <input type="text" class="reply-input" id="replyInput-${rev.id}" placeholder="Әкімшілік жауабын қосу..." value="${escapeHtml(rev.adminReply || '')}">
-                            <button class="reply-btn" onclick="addAdminReply(${rev.id}, document.getElementById('replyInput-${rev.id}').value)">Жауап беру</button>
+                            <button class="reply-btn" onclick="addAdminReply('${rev.id}', document.getElementById('replyInput-${rev.id}').value)">Жауап беру</button>
                         </div>
                     ` : ''}
                 </div>
@@ -778,9 +928,11 @@
     }
 
     function updateAdminStats() {
-        document.getElementById("totalReviews").innerText = reviews.length;
-        const repliedCount = reviews.filter(r => r.adminReply && r.adminReply.trim() !== "").length;
+        document.getElementById("totalReviews").innerText = allReviews.length;
+        const repliedCount = allReviews.filter(r => r.adminReply && r.adminReply.trim() !== "").length;
         document.getElementById("totalReplies").innerText = repliedCount;
+        const totalLikes = allReviews.reduce((sum, r) => sum + (r.likes || 0), 0);
+        document.getElementById("totalLikes").innerText = totalLikes;
     }
 
     function adminLogin() {
@@ -808,6 +960,7 @@
         renderReviews();
     }
 
+    // Форма жіберу
     document.getElementById("feedbackForm").addEventListener("submit", function(e) {
         e.preventDefault();
         const authorInput = document.getElementById("authorName").value;
@@ -833,6 +986,7 @@
         document.getElementById("feedbackText").value = "";
     });
 
+    // Фильтрлер
     document.querySelectorAll(".filter-chip").forEach(chip => {
         chip.addEventListener("click", function() {
             document.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
@@ -842,11 +996,13 @@
         });
     });
 
+    // Іздеу
     document.getElementById("searchInput").addEventListener("input", function() {
         searchQuery = this.value;
         renderReviews();
     });
 
+    // Админ панелін ашу/жабу
     document.getElementById("adminPanelBtn").addEventListener("click", function() {
         const panel = document.getElementById("adminPanel");
         panel.classList.toggle("active");
@@ -856,13 +1012,15 @@
         }
     });
 
+    // Глобалды функциялар
     window.voteReview = voteReview;
     window.deleteReview = deleteReview;
     window.addAdminReply = addAdminReply;
     window.adminLogin = adminLogin;
     window.adminLogout = adminLogout;
 
-    loadReviewsFromStorage();
+    // Бастау
+    initFirebase();
 </script>
 </body>
 </html>

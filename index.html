@@ -1,0 +1,759 @@
+﻿<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Semey BIL | Оқушылар үні - Пікірлер платформасы</title>
+    <!-- Google Fonts: Стильді және заманауи шрифттер -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (иконкалар) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0f1e 0%, #0c1222 100%);
+            font-family: 'Inter', sans-serif;
+            color: #eef2ff;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glowPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 12px rgba(99, 102, 241, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+            }
+        }
+
+        .fade-up {
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.2);
+            backdrop-filter: blur(8px);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(99, 102, 241, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            background: linear-gradient(120deg, #ffffff, #a5b4fc, #818cf8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .sub {
+            color: #9ca3af;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1.8fr;
+            gap: 2rem;
+        }
+
+        .glass-card {
+            background: rgba(18, 24, 38, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.8rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 4px solid #818cf8;
+            padding-left: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.3rem;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #cbd5e6;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #2d3748;
+            border-radius: 1rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: #f0f3fa;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+        }
+
+        .checkbox-flex {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 1rem 0;
+        }
+
+        .checkbox-flex input {
+            width: 20px;
+            height: 20px;
+            accent-color: #818cf8;
+        }
+
+        .btn-primary {
+            background: linear-gradient(95deg, #6366f1, #8b5cf6);
+            border: none;
+            padding: 0.9rem 1.5rem;
+            width: 100%;
+            border-radius: 1.5rem;
+            font-weight: 700;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+            margin-top: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: scale(0.98);
+            background: linear-gradient(95deg, #7c3aed, #6366f1);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-chip {
+            background: rgba(45, 55, 72, 0.7);
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .filter-chip.active {
+            background: #6366f1;
+            color: white;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.5);
+        }
+
+        .filter-chip:hover:not(.active) {
+            background: #2d3748;
+            border-color: #6366f1;
+        }
+
+        .search-box {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 2rem;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #2d3748;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            padding: 0.5rem;
+            width: 180px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+        }
+
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .review-card {
+            background: rgba(15, 20, 32, 0.7);
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            border-left: 4px solid #6366f1;
+            transition: 0.2s;
+            animation: fadeUp 0.3s ease;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .reviewer-name {
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .anonymous-badge {
+            background: #2d3748;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 30px;
+            color: #a0aec0;
+        }
+
+        .category-tag {
+            background: #1e293b;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #a5b4fc;
+        }
+
+        .review-text {
+            margin: 12px 0;
+            line-height: 1.45;
+            color: #e2e8f0;
+            word-break: break-word;
+        }
+
+        .review-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .vote-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .vote-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.2s;
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+
+        .vote-btn:hover {
+            background: rgba(129, 140, 248, 0.1);
+            color: #c084fc;
+        }
+
+        .vote-count {
+            font-weight: 600;
+        }
+
+        .admin-reply {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 1rem;
+            padding: 0.7rem;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            border-left: 2px solid #818cf8;
+        }
+
+        .reply-icon {
+            color: #818cf8;
+            margin-right: 5px;
+        }
+
+        .reply-section {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        .reply-input {
+            flex: 1;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #2d3748;
+            border-radius: 1rem;
+            color: white;
+        }
+
+        .reply-btn {
+            background: #6366f1;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            color: white;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+
+        .reply-btn:hover {
+            background: #8b5cf6;
+        }
+
+        .date-text {
+            font-size: 0.7rem;
+            color: #6b7280;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6b7280;
+        }
+
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 500;
+            z-index: 1000;
+            animation: fadeUp 0.3s ease;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 900px) {
+            .two-columns {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            body {
+                padding: 1rem;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #6366f1;
+            border-radius: 10px;
+        }
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #4b5563;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header fade-up">
+        <div class="badge"><i class="fas fa-microphone-alt"></i> SEMEY BIL | ОҚУШЫЛАР ҮНІ</div>
+        <h1>Пікірлер платформасы</h1>
+        <div class="sub">Жатақхана, асхана, ұстаздар және басқа да мәселелер бойынша ұсыныс немесе шағым жіберіңіз</div>
+    </div>
+
+    <div class="two-columns">
+        <!-- Сол жақ: Пікір жазу формасы -->
+        <div class="glass-card fade-up" style="animation-delay: 0.1s">
+            <div class="section-title">
+                <i class="fas fa-pen-fancy"></i> Пікір қалдыру
+            </div>
+            <form id="feedbackForm">
+                <div class="form-group">
+                    <label><i class="fas fa-user-circle"></i> Аты-жөніңіз</label>
+                    <input type="text" id="authorName" placeholder="Мысалы: Айбек Н." value="">
+                </div>
+                <div class="checkbox-flex">
+                    <input type="checkbox" id="anonymousCheckbox">
+                    <label for="anonymousCheckbox" style="margin-bottom: 0;">🔒 Анонимді түрде жіберу</label>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-tag"></i> Санат</label>
+                    <select id="categorySelect">
+                        <option value="асхана">🍽️ Асхана</option>
+                        <option value="жатақхана">🏠 Жатақхана</option>
+                        <option value="мұғалімдер">📚 Мұғалімдер</option>
+                        <option value="басқа">✨ Басқа / Жалпы ұсыныс</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-comment-dots"></i> Пікіріңіз / Ұсынысыңыз</label>
+                    <textarea rows="4" id="feedbackText" placeholder="Мұнда өз ойыңызды еркін жазыңыз..." required></textarea>
+                </div>
+                <button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> Пікір жіберу</button>
+            </form>
+            <div style="margin-top: 1rem; font-size: 0.7rem; color: #6b7280; text-align: center;">
+                <i class="fas fa-shield-alt"></i> Барлық пікірлер барлық оқушыларға көрінеді. Анонимді режимді таңдауға болады.
+            </div>
+        </div>
+
+        <!-- Оң жақ: пікірлер тізімі + фильтрлер -->
+        <div class="glass-card fade-up" style="animation-delay: 0.2s">
+            <div class="section-title">
+                <i class="fas fa-comments"></i> Оқушылар пікірлері
+            </div>
+            <div class="filters">
+                <div class="filter-buttons" id="filterContainer">
+                    <div class="filter-chip active" data-cat="all">Барлығы</div>
+                    <div class="filter-chip" data-cat="асхана">Асхана</div>
+                    <div class="filter-chip" data-cat="жатақхана">Жатақхана</div>
+                    <div class="filter-chip" data-cat="мұғалімдер">Мұғалімдер</div>
+                    <div class="filter-chip" data-cat="басқа">Басқа</div>
+                </div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Пікір іздеу...">
+                </div>
+            </div>
+            <div id="reviewsContainer" class="reviews-list">
+                <div class="empty-state">
+                    <i class="fas fa-inbox fa-2x"></i>
+                    <p>Әзірге ешқандай пікір жоқ. Бірінші болып пікір қалдырыңыз!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <i class="fas fa-school"></i> Semey BIL Білім беру мекемесі | Оқушылар үні — әр пікір маңызды
+    </footer>
+</div>
+
+<script>
+    // ---------- БАЗА ДЕРЕКТЕР (localStorage) ----------
+    let reviews = [];
+
+    // Бастапқы жүктеу: тек қана бос массив, ешқандай демо-пікірлер жоқ
+    function loadReviewsFromStorage() {
+        const stored = localStorage.getItem("semeybil_student_voices");
+        if(stored) {
+            reviews = JSON.parse(stored);
+        } else {
+            // Бос база, ешқандай көрсетілімдік пікір жоқ
+            reviews = [];
+            saveReviewsToStorage();
+        }
+        renderReviews();
+    }
+
+    function saveReviewsToStorage() {
+        localStorage.setItem("semeybil_student_voices", JSON.stringify(reviews));
+    }
+
+    // Көмекші функция: санат атауын көрсету
+    function getCategoryName(cat) {
+        const map = {
+            'асхана': '🍽️ Асхана',
+            'жатақхана': '🏠 Жатақхана',
+            'мұғалімдер': '📚 Мұғалімдер',
+            'басқа': '✨ Басқа'
+        };
+        return map[cat] || cat;
+    }
+
+    // Уақытты қазақша форматтау
+    function getCurrentDateTime() {
+        const now = new Date();
+        return now.toLocaleString('kk-KZ', { hour12: false });
+    }
+
+    // Жаңа пікір қосу
+    function addReview(author, isAnonymous, category, text) {
+        const newReview = {
+            id: Date.now(),
+            author: author.trim() === "" ? "Қонақ" : author.trim(),
+            isAnonymous: isAnonymous,
+            category: category,
+            text: text.trim(),
+            likes: 0,
+            dislikes: 0,
+            adminReply: "",
+            createdAt: getCurrentDateTime()
+        };
+        reviews.unshift(newReview); // жаңа пікір жоғарыда көрінсін
+        saveReviewsToStorage();
+        renderReviews();
+        showToast("Пікіріңіз сәтті жіберілді! ✅");
+    }
+
+    // Пікірді өшіру (әкімшілік функция)
+    function deleteReview(id) {
+        reviews = reviews.filter(rev => rev.id !== id);
+        saveReviewsToStorage();
+        renderReviews();
+        showToast("Пікір жойылды 🗑️");
+    }
+
+    // Лайк/дислайк басу
+    function voteReview(id, type) {
+        const review = reviews.find(rev => rev.id === id);
+        if(review) {
+            if(type === 'like') {
+                review.likes = (review.likes || 0) + 1;
+            } else if(type === 'dislike') {
+                review.dislikes = (review.dislikes || 0) + 1;
+            }
+            saveReviewsToStorage();
+            renderReviews();
+        }
+    }
+
+    // Әкімші жауабын қосу
+    function addAdminReply(id, replyText) {
+        if(replyText.trim() === "") return;
+        const review = reviews.find(rev => rev.id === id);
+        if(review) {
+            review.adminReply = replyText.trim();
+            saveReviewsToStorage();
+            renderReviews();
+            showToast("Жауап сақталды 📢");
+        }
+    }
+
+    // Toast хабарлама
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'toast-message';
+        toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+
+    // Фильтр және іздеу айнымалылары
+    let currentFilter = "all";
+    let searchQuery = "";
+
+    function renderReviews() {
+        const container = document.getElementById("reviewsContainer");
+        let filtered = [...reviews];
+
+        // Категория бойынша фильтр
+        if(currentFilter !== "all") {
+            filtered = filtered.filter(rev => rev.category === currentFilter);
+        }
+        // Іздеу (мәтін бойынша)
+        if(searchQuery.trim() !== "") {
+            const q = searchQuery.trim().toLowerCase();
+            filtered = filtered.filter(rev => rev.text.toLowerCase().includes(q) || 
+                                        (!rev.isAnonymous && rev.author.toLowerCase().includes(q)) ||
+                                        (rev.adminReply && rev.adminReply.toLowerCase().includes(q)));
+        }
+
+        if(filtered.length === 0) {
+            container.innerHTML = `<div class="empty-state"><i class="fas fa-comment-slash"></i> <p>Пікірлер табылмады. Бірінші болып пікір қосыңыз!</p></div>`;
+            return;
+        }
+
+        container.innerHTML = filtered.map(rev => {
+            const displayName = rev.isAnonymous ? "🔒 Анонимді қолданушы" : rev.author;
+            const categoryName = getCategoryName(rev.category);
+            const dateStr = rev.createdAt || "Күн белгісіз";
+            
+            return `
+                <div class="review-card" data-id="${rev.id}">
+                    <div class="review-header">
+                        <div class="reviewer-name">
+                            <i class="fas fa-user-${rev.isAnonymous ? 'secret' : 'circle'}"></i>
+                            <span>${escapeHtml(displayName)}</span>
+                            ${rev.isAnonymous ? '<span class="anonymous-badge">Аноним</span>' : ''}
+                            <span class="category-tag">${categoryName}</span>
+                        </div>
+                        <div class="date-text">${escapeHtml(dateStr)}</div>
+                    </div>
+                    <div class="review-text">${escapeHtml(rev.text)}</div>
+                    <div class="review-footer">
+                        <div class="vote-buttons">
+                            <button class="vote-btn" onclick="voteReview(${rev.id}, 'like')">
+                                <i class="fas fa-thumbs-up"></i> <span class="vote-count">${rev.likes || 0}</span>
+                            </button>
+                            <button class="vote-btn" onclick="voteReview(${rev.id}, 'dislike')">
+                                <i class="fas fa-thumbs-down"></i> <span class="vote-count">${rev.dislikes || 0}</span>
+                            </button>
+                            <button class="vote-btn" onclick="deleteReview(${rev.id})" style="color:#ef4444;">
+                                <i class="fas fa-trash-alt"></i> Жою
+                            </button>
+                        </div>
+                    </div>
+                    ${rev.adminReply ? `
+                        <div class="admin-reply">
+                            <i class="fas fa-reply-all reply-icon"></i> 
+                            <strong>Әкімшілік жауабы:</strong> ${escapeHtml(rev.adminReply)}
+                        </div>
+                    ` : ''}
+                    <div class="reply-section">
+                        <input type="text" class="reply-input" id="replyInput-${rev.id}" placeholder="Әкімшілік жауабын қосу...">
+                        <button class="reply-btn" onclick="addAdminReply(${rev.id}, document.getElementById('replyInput-${rev.id}').value)">Жауап беру</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // Қарапайым XSS қорғанысы
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    // Форма жіберу
+    document.getElementById("feedbackForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const authorInput = document.getElementById("authorName").value;
+        const isAnonymous = document.getElementById("anonymousCheckbox").checked;
+        const category = document.getElementById("categorySelect").value;
+        const text = document.getElementById("feedbackText").value;
+        
+        if(!text.trim()) {
+            showToast("Пікір мәтінін жазыңыз! ❌");
+            return;
+        }
+        
+        let finalAuthor = authorInput.trim();
+        if(isAnonymous) {
+            finalAuthor = "Аноним";
+        } else if(finalAuthor === "") {
+            finalAuthor = "Қонақ";
+        }
+        
+        addReview(finalAuthor, isAnonymous, category, text);
+        // форманы тазалау
+        document.getElementById("authorName").value = "";
+        document.getElementById("anonymousCheckbox").checked = false;
+        document.getElementById("feedbackText").value = "";
+    });
+
+    // Фильтрлерді баптау
+    document.querySelectorAll(".filter-chip").forEach(chip => {
+        chip.addEventListener("click", function() {
+            document.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
+            this.classList.add("active");
+            currentFilter = this.getAttribute("data-cat");
+            renderReviews();
+        });
+    });
+
+    // Іздеу өрісі
+    const searchInput = document.getElementById("searchInput");
+    searchInput.addEventListener("input", function() {
+        searchQuery = this.value;
+        renderReviews();
+    });
+
+    // Глобалды функцияларды анықтау (onclick үшін)
+    window.voteReview = voteReview;
+    window.deleteReview = deleteReview;
+    window.addAdminReply = addAdminReply;
+
+    // Бастапқы жүктеу
+    loadReviewsFromStorage();
+</script>
+</body>
+</html>

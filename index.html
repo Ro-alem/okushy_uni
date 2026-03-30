@@ -1,12 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="kk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Semey BIL | Оқушылар үні - Пікірлер платформасы</title>
-    <!-- Google Fonts: Стильді және заманауи шрифттер -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome 6 (иконкалар) -->
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -36,18 +36,6 @@
             100% {
                 opacity: 1;
                 transform: translateY(0);
-            }
-        }
-
-        @keyframes glowPulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
-            }
-            70% {
-                box-shadow: 0 0 0 12px rgba(99, 102, 241, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
             }
         }
 
@@ -91,6 +79,89 @@
             margin: 0 auto;
         }
 
+        /* Admin Panel Styles */
+        .admin-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 2rem;
+        }
+
+        .admin-btn {
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.5);
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            color: #a5b4fc;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-btn:hover {
+            background: rgba(99, 102, 241, 0.4);
+            color: white;
+        }
+
+        .admin-panel {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            display: none;
+        }
+
+        .admin-panel.active {
+            display: block;
+            animation: fadeUp 0.3s ease;
+        }
+
+        .login-form, .admin-dashboard {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .admin-dashboard {
+            max-width: 100%;
+        }
+
+        .login-input {
+            margin-bottom: 1rem;
+        }
+
+        .login-input input {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #2d3748;
+            border-radius: 1rem;
+            color: white;
+        }
+
+        .admin-stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(99, 102, 241, 0.2);
+            padding: 1rem;
+            border-radius: 1rem;
+            flex: 1;
+            text-align: center;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            margin-top: 1rem;
+        }
+
         .two-columns {
             display: grid;
             grid-template-columns: 1fr 1.8fr;
@@ -105,11 +176,6 @@
             padding: 1.8rem;
             transition: all 0.3s ease;
             box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.4);
-        }
-
-        .glass-card:hover {
-            border-color: rgba(99, 102, 241, 0.4);
-            transform: translateY(-3px);
         }
 
         .section-title {
@@ -185,7 +251,6 @@
         .btn-primary:hover {
             transform: scale(0.98);
             background: linear-gradient(95deg, #7c3aed, #6366f1);
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
         }
 
         .filters {
@@ -217,12 +282,6 @@
         .filter-chip.active {
             background: #6366f1;
             color: white;
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.5);
-        }
-
-        .filter-chip:hover:not(.active) {
-            background: #2d3748;
-            border-color: #6366f1;
         }
 
         .search-box {
@@ -240,10 +299,6 @@
             border: none;
             padding: 0.5rem;
             width: 180px;
-        }
-
-        .search-box input:focus {
-            outline: none;
         }
 
         .reviews-list {
@@ -337,10 +392,6 @@
             color: #c084fc;
         }
 
-        .vote-count {
-            font-weight: 600;
-        }
-
         .admin-reply {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 1rem;
@@ -350,13 +401,12 @@
             border-left: 2px solid #818cf8;
         }
 
-        .reply-icon {
-            color: #818cf8;
-            margin-right: 5px;
-        }
-
         .reply-section {
             margin-top: 12px;
+            display: none;
+        }
+
+        .reply-section.admin-mode {
             display: flex;
             gap: 8px;
             align-items: flex-start;
@@ -372,7 +422,7 @@
             color: white;
         }
 
-        .reply-btn {
+        .reply-btn, .delete-btn {
             background: #6366f1;
             border: none;
             padding: 0.5rem 1rem;
@@ -383,8 +433,8 @@
             transition: 0.2s;
         }
 
-        .reply-btn:hover {
-            background: #8b5cf6;
+        .delete-btn {
+            background: #ef4444;
         }
 
         .date-text {
@@ -409,43 +459,81 @@
             font-weight: 500;
             z-index: 1000;
             animation: fadeUp 0.3s ease;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
         }
 
         @media (max-width: 900px) {
             .two-columns {
                 grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            body {
-                padding: 1rem;
             }
             h1 {
                 font-size: 2rem;
             }
         }
 
-        ::-webkit-scrollbar {
-            width: 5px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1e293b;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #6366f1;
-            border-radius: 10px;
-        }
         footer {
             margin-top: 3rem;
             text-align: center;
             font-size: 0.8rem;
             color: #4b5563;
         }
+
+        .admin-badge {
+            color: #fbbf24;
+        }
     </style>
 </head>
 <body>
 <div class="container">
+    <div class="admin-bar">
+        <div class="admin-btn" id="adminPanelBtn">
+            <i class="fas fa-user-shield"></i> Әкімшілік
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <div id="adminLoginForm" class="login-form">
+            <div class="section-title">
+                <i class="fas fa-lock"></i> Әкімшілік кіру
+            </div>
+            <div class="login-input">
+                <input type="text" id="adminLogin" placeholder="Логин" value="admin">
+            </div>
+            <div class="login-input">
+                <input type="password" id="adminPassword" placeholder="Құпия сөз" value="admin123">
+            </div>
+            <button class="btn-primary" onclick="adminLogin()">Кіру</button>
+            <div style="margin-top: 1rem; font-size: 0.8rem; color: #6b7280; text-align: center;">
+                <i class="fas fa-info-circle"></i> Демо: логин: admin, құпия сөз: admin123
+            </div>
+        </div>
+        <div id="adminDashboard" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <div class="section-title" style="margin-bottom: 0;">
+                    <i class="fas fa-chalkboard-user"></i> Әкімшілік басқару панелі
+                </div>
+                <button class="admin-btn" onclick="adminLogout()" style="background: #ef4444; color: white;">
+                    <i class="fas fa-sign-out-alt"></i> Шығу
+                </button>
+            </div>
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <i class="fas fa-comments"></i>
+                    <h3 id="totalReviews">0</h3>
+                    <p>Барлық пікірлер</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-reply-all"></i>
+                    <h3 id="totalReplies">0</h3>
+                    <p>Жауап берілген</p>
+                </div>
+            </div>
+            <div class="glass-card" style="padding: 1rem;">
+                <p style="color: #a5b4fc;"><i class="fas fa-info-circle"></i> Әкімші режимінде барлық пікірлердің жанында "Жою" және "Жауап беру" батырмалары көрінеді.</p>
+            </div>
+        </div>
+    </div>
+
     <div class="header fade-up">
         <div class="badge"><i class="fas fa-microphone-alt"></i> SEMEY BIL | ОҚУШЫЛАР ҮНІ</div>
         <h1>Пікірлер платформасы</h1>
@@ -453,7 +541,6 @@
     </div>
 
     <div class="two-columns">
-        <!-- Сол жақ: Пікір жазу формасы -->
         <div class="glass-card fade-up" style="animation-delay: 0.1s">
             <div class="section-title">
                 <i class="fas fa-pen-fancy"></i> Пікір қалдыру
@@ -487,7 +574,6 @@
             </div>
         </div>
 
-        <!-- Оң жақ: пікірлер тізімі + фильтрлер -->
         <div class="glass-card fade-up" style="animation-delay: 0.2s">
             <div class="section-title">
                 <i class="fas fa-comments"></i> Оқушылар пікірлері
@@ -519,27 +605,26 @@
 </div>
 
 <script>
-    // ---------- БАЗА ДЕРЕКТЕР (localStorage) ----------
     let reviews = [];
+    let isAdminLoggedIn = false;
 
-    // Бастапқы жүктеу: тек қана бос массив, ешқандай демо-пікірлер жоқ
     function loadReviewsFromStorage() {
         const stored = localStorage.getItem("semeybil_student_voices");
         if(stored) {
             reviews = JSON.parse(stored);
         } else {
-            // Бос база, ешқандай көрсетілімдік пікір жоқ
             reviews = [];
             saveReviewsToStorage();
         }
         renderReviews();
+        if(isAdminLoggedIn) updateAdminStats();
     }
 
     function saveReviewsToStorage() {
         localStorage.setItem("semeybil_student_voices", JSON.stringify(reviews));
+        if(isAdminLoggedIn) updateAdminStats();
     }
 
-    // Көмекші функция: санат атауын көрсету
     function getCategoryName(cat) {
         const map = {
             'асхана': '🍽️ Асхана',
@@ -550,13 +635,11 @@
         return map[cat] || cat;
     }
 
-    // Уақытты қазақша форматтау
     function getCurrentDateTime() {
         const now = new Date();
         return now.toLocaleString('kk-KZ', { hour12: false });
     }
 
-    // Жаңа пікір қосу
     function addReview(author, isAnonymous, category, text) {
         const newReview = {
             id: Date.now(),
@@ -569,13 +652,12 @@
             adminReply: "",
             createdAt: getCurrentDateTime()
         };
-        reviews.unshift(newReview); // жаңа пікір жоғарыда көрінсін
+        reviews.unshift(newReview);
         saveReviewsToStorage();
         renderReviews();
         showToast("Пікіріңіз сәтті жіберілді! ✅");
     }
 
-    // Пікірді өшіру (әкімшілік функция)
     function deleteReview(id) {
         reviews = reviews.filter(rev => rev.id !== id);
         saveReviewsToStorage();
@@ -583,7 +665,6 @@
         showToast("Пікір жойылды 🗑️");
     }
 
-    // Лайк/дислайк басу
     function voteReview(id, type) {
         const review = reviews.find(rev => rev.id === id);
         if(review) {
@@ -597,7 +678,6 @@
         }
     }
 
-    // Әкімші жауабын қосу
     function addAdminReply(id, replyText) {
         if(replyText.trim() === "") return;
         const review = reviews.find(rev => rev.id === id);
@@ -609,7 +689,6 @@
         }
     }
 
-    // Toast хабарлама
     function showToast(message) {
         const toast = document.createElement('div');
         toast.className = 'toast-message';
@@ -620,7 +699,6 @@
         }, 3000);
     }
 
-    // Фильтр және іздеу айнымалылары
     let currentFilter = "all";
     let searchQuery = "";
 
@@ -628,16 +706,13 @@
         const container = document.getElementById("reviewsContainer");
         let filtered = [...reviews];
 
-        // Категория бойынша фильтр
         if(currentFilter !== "all") {
             filtered = filtered.filter(rev => rev.category === currentFilter);
         }
-        // Іздеу (мәтін бойынша)
         if(searchQuery.trim() !== "") {
             const q = searchQuery.trim().toLowerCase();
             filtered = filtered.filter(rev => rev.text.toLowerCase().includes(q) || 
-                                        (!rev.isAnonymous && rev.author.toLowerCase().includes(q)) ||
-                                        (rev.adminReply && rev.adminReply.toLowerCase().includes(q)));
+                                        (!rev.isAnonymous && rev.author.toLowerCase().includes(q)));
         }
 
         if(filtered.length === 0) {
@@ -670,9 +745,9 @@
                             <button class="vote-btn" onclick="voteReview(${rev.id}, 'dislike')">
                                 <i class="fas fa-thumbs-down"></i> <span class="vote-count">${rev.dislikes || 0}</span>
                             </button>
-                            <button class="vote-btn" onclick="deleteReview(${rev.id})" style="color:#ef4444;">
+                            ${isAdminLoggedIn ? `<button class="vote-btn delete-btn" onclick="deleteReview(${rev.id})" style="color:#ef4444;">
                                 <i class="fas fa-trash-alt"></i> Жою
-                            </button>
+                            </button>` : ''}
                         </div>
                     </div>
                     ${rev.adminReply ? `
@@ -681,16 +756,17 @@
                             <strong>Әкімшілік жауабы:</strong> ${escapeHtml(rev.adminReply)}
                         </div>
                     ` : ''}
-                    <div class="reply-section">
-                        <input type="text" class="reply-input" id="replyInput-${rev.id}" placeholder="Әкімшілік жауабын қосу...">
-                        <button class="reply-btn" onclick="addAdminReply(${rev.id}, document.getElementById('replyInput-${rev.id}').value)">Жауап беру</button>
-                    </div>
+                    ${isAdminLoggedIn ? `
+                        <div class="reply-section admin-mode">
+                            <input type="text" class="reply-input" id="replyInput-${rev.id}" placeholder="Әкімшілік жауабын қосу..." value="${escapeHtml(rev.adminReply || '')}">
+                            <button class="reply-btn" onclick="addAdminReply(${rev.id}, document.getElementById('replyInput-${rev.id}').value)">Жауап беру</button>
+                        </div>
+                    ` : ''}
                 </div>
             `;
         }).join('');
     }
 
-    // Қарапайым XSS қорғанысы
     function escapeHtml(str) {
         if (!str) return '';
         return str.replace(/[&<>]/g, function(m) {
@@ -698,12 +774,40 @@
             if (m === '<') return '&lt;';
             if (m === '>') return '&gt;';
             return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
         });
     }
 
-    // Форма жіберу
+    function updateAdminStats() {
+        document.getElementById("totalReviews").innerText = reviews.length;
+        const repliedCount = reviews.filter(r => r.adminReply && r.adminReply.trim() !== "").length;
+        document.getElementById("totalReplies").innerText = repliedCount;
+    }
+
+    function adminLogin() {
+        const login = document.getElementById("adminLogin").value;
+        const password = document.getElementById("adminPassword").value;
+        
+        if(login === "admin" && password === "admin123") {
+            isAdminLoggedIn = true;
+            document.getElementById("adminLoginForm").style.display = "none";
+            document.getElementById("adminDashboard").style.display = "block";
+            showToast("Әкімшілік панеліне сәтті кірдіңіз!");
+            renderReviews();
+            updateAdminStats();
+        } else {
+            showToast("Қате логин немесе құпия сөз! ❌");
+        }
+    }
+
+    function adminLogout() {
+        isAdminLoggedIn = false;
+        document.getElementById("adminLoginForm").style.display = "block";
+        document.getElementById("adminDashboard").style.display = "none";
+        document.getElementById("adminPanel").classList.remove("active");
+        showToast("Әкімшілік режимінен шықтыңыз");
+        renderReviews();
+    }
+
     document.getElementById("feedbackForm").addEventListener("submit", function(e) {
         e.preventDefault();
         const authorInput = document.getElementById("authorName").value;
@@ -724,13 +828,11 @@
         }
         
         addReview(finalAuthor, isAnonymous, category, text);
-        // форманы тазалау
         document.getElementById("authorName").value = "";
         document.getElementById("anonymousCheckbox").checked = false;
         document.getElementById("feedbackText").value = "";
     });
 
-    // Фильтрлерді баптау
     document.querySelectorAll(".filter-chip").forEach(chip => {
         chip.addEventListener("click", function() {
             document.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
@@ -740,19 +842,26 @@
         });
     });
 
-    // Іздеу өрісі
-    const searchInput = document.getElementById("searchInput");
-    searchInput.addEventListener("input", function() {
+    document.getElementById("searchInput").addEventListener("input", function() {
         searchQuery = this.value;
         renderReviews();
     });
 
-    // Глобалды функцияларды анықтау (onclick үшін)
+    document.getElementById("adminPanelBtn").addEventListener("click", function() {
+        const panel = document.getElementById("adminPanel");
+        panel.classList.toggle("active");
+        if(!isAdminLoggedIn) {
+            document.getElementById("adminLoginForm").style.display = "block";
+            document.getElementById("adminDashboard").style.display = "none";
+        }
+    });
+
     window.voteReview = voteReview;
     window.deleteReview = deleteReview;
     window.addAdminReply = addAdminReply;
+    window.adminLogin = adminLogin;
+    window.adminLogout = adminLogout;
 
-    // Бастапқы жүктеу
     loadReviewsFromStorage();
 </script>
 </body>
